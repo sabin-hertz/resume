@@ -1,0 +1,841 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sabin Hertz - Resume</title>
+    <style>
+        @font-face {
+            font-family: 'Consolas';
+            src: url('fonts/consolas.ttf') format('truetype');
+            font-weight: normal;
+            font-style: normal;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Consolas', 'Courier New', monospace;
+            background-color: #000000;
+            color: #d4d4d4;
+            line-height: 1.6;
+            font-size: 14px;
+            padding: 20px;
+            margin: 0;
+            min-height: 100vh;
+            overflow-x: auto;
+        }
+        
+        .ascii-container {
+            width: 100%;
+            max-width: calc(100vw - 40px);
+            margin: 0 auto;
+            position: relative;
+        }
+        
+        .ascii-border-outer {
+            position: relative;
+            background-color: #000000;
+            padding: 0;
+        }
+        
+        .ascii-border-outer::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            pointer-events: none;
+            z-index: 1;
+        }
+        
+        .main-container {
+            padding: 20px;
+            margin: 0;
+            background-color: #000000;
+            position: relative;
+            overflow-x: auto;
+            z-index: 2;
+        }
+        
+        .ascii-border {
+            position: relative;
+            margin: 20px 0;
+        }
+        
+        .ascii-border::before {
+            content: '─────────────────────────────────────────────────────────────────────────────────────';
+            display: block;
+            width: 100%;
+            color: #3e3e42;
+            text-align: center;
+            font-size: 14px;
+            line-height: 1;
+            margin-bottom: 10px;
+            overflow: hidden;
+            white-space: nowrap;
+        }
+        
+        .ascii-border::after {
+            content: '─────────────────────────────────────────────────────────────────────────────────────';
+            display: block;
+            width: 100%;
+            color: #3e3e42;
+            text-align: center;
+            font-size: 14px;
+            line-height: 1;
+            margin-top: 10px;
+            overflow: hidden;
+            white-space: nowrap;
+        }
+
+        .document {
+            white-space: pre-line;
+        }
+        
+        .profile-section {
+            display: flex;
+            align-items: center;
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+        
+        .profile-image {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            border: 2px solid #4fc1ff;
+            background-color: #2d2d30;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            color: #4fc1ff;
+            flex-shrink: 0;
+            font-weight: 600;
+            overflow: hidden;
+        }
+        
+        .profile-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        .header-text {
+            font-size: 14px;
+        }
+        
+        .name {
+            color: #4fc1ff;
+            font-weight: 600;
+        }
+        
+        .title {
+            color: #4ec9b0;
+        }
+        
+        .section-title {
+            color: #dcdcaa;
+            font-weight: 600;
+        }
+        
+        .subsection-title {
+            color: #c586c0;
+            font-weight: 500;
+        }
+        
+        .highlight {
+            color: #ce9178;
+        }
+        
+        .keyword {
+            color: #c586c0;
+        }
+        
+        .string {
+            color: #ce9178;
+        }
+        
+        .number {
+            color: #4ec9b0;
+        }
+        
+        .comment {
+            color: #9d9d9d;
+        }
+        
+        .border {
+            color: #3e3e42;
+        }
+        
+        .achievement-icon {
+            color: #dcdcaa;
+        }
+        
+        .code-block {
+            padding: 15px 0;
+            margin: 10px 0;
+            background-color: #1a1a1a;
+            color: #d4d4d4;
+            font-family: 'Consolas', 'Courier New', monospace;
+            line-height: 1.4;
+            overflow-x: auto;
+        }
+        
+        .skill-dropdown {
+            position: relative;
+            display: inline-block;
+            margin: 2px 0;
+        }
+        
+        .skill-level {
+            background: linear-gradient(135deg, #2d2d30, #1a1a1a);
+            border: 1px solid #4fc1ff;
+            border-radius: 6px;
+            padding: 8px 12px;
+            color: #4fc1ff;
+            cursor: pointer;
+            font-family: 'Consolas', 'Courier New', monospace;
+            font-size: 13px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            user-select: none;
+            box-shadow: 0 2px 8px rgba(79, 193, 255, 0.1);
+        }
+        
+        .skill-level:hover {
+            background: linear-gradient(135deg, #4fc1ff20, #2d2d30);
+            border-color: #4ec9b0;
+            color: #4ec9b0;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(79, 193, 255, 0.2);
+        }
+        
+        .skill-level::after {
+            content: '▼';
+            margin-left: 8px;
+            font-size: 10px;
+            transition: transform 0.3s ease;
+        }
+        
+        .skill-dropdown.active .skill-level::after {
+            transform: rotate(180deg);
+        }
+        
+        .skill-content {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            right: 0;
+            background: linear-gradient(135deg, #1a1a1a, #2d2d30);
+            border: 1px solid #4fc1ff;
+            border-top: none;
+            border-radius: 0 0 6px 6px;
+            padding: 12px;
+            z-index: 10;
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(-10px);
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4);
+            min-width: 300px;
+        }
+        
+        .skill-dropdown.active .skill-content {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+        
+        .skill-item {
+            color: #ce9178;
+            margin: 4px 0;
+            padding: 4px 8px;
+            border-radius: 3px;
+            transition: all 0.2s ease;
+            font-family: 'Consolas', 'Courier New', monospace;
+            font-size: 12px;
+        }
+        
+        .skill-item:hover {
+            background: rgba(79, 193, 255, 0.1);
+            color: #4fc1ff;
+            transform: translateX(4px);
+        }
+        
+        .skill-item::before {
+            content: '▶ ';
+            color: #4ec9b0;
+            margin-right: 4px;
+        }
+        
+        .skills-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin: 10px 0;
+        }
+        
+        /* Enhanced visual effects */
+        .skill-level {
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .skill-level::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(79, 193, 255, 0.2), transparent);
+            transition: left 0.5s ease;
+        }
+        
+        .skill-level:hover::before {
+            left: 100%;
+        }
+        
+        /* Smooth animations for skill items */
+        .skill-item {
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .skill-item::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(78, 201, 176, 0.1), transparent);
+            transition: left 0.3s ease;
+        }
+        
+        .skill-item:hover::after {
+            left: 100%;
+        }
+        
+        /* Improved responsive design for dropdowns */
+        @media (max-width: 768px) {
+            body {
+                padding: 10px;
+                font-size: 12px;
+            }
+            
+            .ascii-container {
+                max-width: calc(100vw - 20px);
+            }
+            
+            .main-container {
+                padding: 15px;
+            }
+            
+            .profile-section {
+                flex-direction: column;
+                text-align: center;
+                gap: 20px;
+            }
+            
+            .profile-image {
+                width: 80px;
+                height: 80px;
+            }
+            
+            .ascii-border::before,
+            .ascii-border::after {
+                content: '────────────────────────────────────────────────────────';
+                font-size: 12px;
+            }
+            
+            .skill-content {
+                min-width: 250px;
+                font-size: 11px;
+            }
+            
+            .skill-level {
+                font-size: 12px;
+                padding: 6px 10px;
+            }
+            
+            .skills-container {
+                gap: 6px;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            body {
+                font-size: 10px;
+                padding: 5px;
+            }
+            
+            .ascii-container {
+                max-width: calc(100vw - 10px);
+            }
+            
+            .main-container {
+                padding: 10px;
+            }
+            
+            .profile-image {
+                width: 60px;
+                height: 60px;
+            }
+            
+            .ascii-border::before,
+            .ascii-border::after {
+                content: '──────────────────────────────────────────────';
+                font-size: 10px;
+            }
+            
+            .skill-content {
+                min-width: 200px;
+                font-size: 10px;
+                padding: 8px;
+            }
+            
+            .skill-level {
+                font-size: 11px;
+                padding: 5px 8px;
+            }
+            
+            .skills-container {
+                gap: 4px;
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            
+            .skill-dropdown {
+                width: 100%;
+                max-width: 250px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="ascii-container">
+        <div class="ascii-border-outer" id="main-border">
+            <div class="main-container">
+        <div class="profile-section">
+            <div class="profile-image">
+                <img src="headshot.jpg" alt="Sabin Hertz">
+            </div>
+            <div class="header-text">
+<span class="name">SABIN HERTZ</span>
+<span class="title">Senior Software Architect | Blockchain Engineer | AI Strategist</span>
+            </div>
+        </div>
+
+        <div class="document">
+<div class="ascii-border">
+<div style="text-align: center; color: #dcdcaa; font-weight: 600; padding: 10px 0;">PROFESSIONAL SUMMARY</div>
+</div>
+
+Visionary technology leader with <span class="number">8+</span> years of entrepreneurial excellence in software engineering, 
+blockchain development, and artificial intelligence. Distinguished track record of architecting and 
+deploying enterprise-grade financial technology solutions, having facilitated over <span class="highlight">$50M</span> in startup 
+capital raises and processed <span class="highlight">$10M+</span> through custom smart contracts with <span class="keyword">zero security breaches</span>. 
+Proven expertise in leading cross-functional teams to deliver transformative solutions for Fortune 500 
+companies, celebrity brands, and global institutions including <span class="string">Nike</span>, <span class="string">The Vatican</span>, and prominent 
+entertainment figures.
+
+<span class="keyword">Core Value Proposition:</span> Exceptional technical acumen combined with strategic business insight, 
+consistently delivering scalable solutions that drive measurable growth and innovation in <span class="string">fintech</span>, 
+<span class="string">DeFi</span>, and <span class="string">AI</span> domains.
+
+<div class="ascii-border">
+<div style="text-align: center; color: #dcdcaa; font-weight: 600; padding: 10px 0;">CORE COMPETENCIES</div>
+</div>
+
+<span class="subsection-title">├─ Enterprise Software Engineering</span>
+│  ▶ Full-Stack Architecture & Development
+│  ▶ System Design & Scalability Engineering  
+│  ▶ API Integration & Microservices Architecture
+│  ▶ Database Engineering & Optimization
+│  ▶ Server Deployment & Infrastructure Management
+
+<span class="subsection-title">├─ Blockchain & DeFi Innovation</span>
+│  ▶ Smart Contract Engineering & Auditing
+│  ▶ Decentralized Finance Protocol Development
+│  ▶ Tokenization Strategy & Implementation
+│  ▶ Real-World Asset (RWA) Infrastructure
+│  ▶ NFT Marketplace Development & Launch
+
+<span class="subsection-title">├─ Artificial Intelligence & Machine Learning</span>
+│  ▶ Custom AI Model Development & Training
+│  ▶ AI Strategy Development & Implementation
+│  ▶ Prompt Engineering & Optimization
+│  ▶ Deep Learning Architecture Design
+│  ▶ AI Automation & Workflow Integration
+
+<span class="subsection-title">└─ Financial Technology Leadership</span>
+   ▶ Payment Infrastructure Development
+   ▶ Banking & Exchange Platform Engineering
+   ▶ Algorithmic Trading Systems
+   ▶ Financial Analytics & Data Visualization
+   ▶ Tokenomics Consulting & Design
+
+<div class="ascii-border">
+<div style="text-align: center; color: #dcdcaa; font-weight: 600; padding: 10px 0;">TECHNICAL EXPERTISE</div>
+</div>
+
+<span class="subsection-title">Programming Languages</span> <span class="comment">// 20+ Years Experience</span>
+
+<div class="skills-container">
+    <div class="skill-dropdown">
+        <div class="skill-level">Master Level</div>
+        <div class="skill-content">
+            <div class="skill-item">C++ (20+ years)</div>
+            <div class="skill-item">Python (20+ years)</div>
+            <div class="skill-item">JavaScript (20+ years)</div>
+        </div>
+    </div>
+    
+    <div class="skill-dropdown">
+        <div class="skill-level">Expert Level</div>
+        <div class="skill-content">
+            <div class="skill-item">Rust</div>
+            <div class="skill-item">Solidity</div>
+            <div class="skill-item">Node.js</div>
+            <div class="skill-item">Go</div>
+            <div class="skill-item">WebAssembly</div>
+        </div>
+    </div>
+    
+    <div class="skill-dropdown">
+        <div class="skill-level">Advanced</div>
+        <div class="skill-content">
+            <div class="skill-item">Common Lisp</div>
+            <div class="skill-item">SQL</div>
+            <div class="skill-item">C#</div>
+            <div class="skill-item">Java</div>
+            <div class="skill-item">Ruby</div>
+            <div class="skill-item">PHP</div>
+            <div class="skill-item">TypeScript</div>
+        </div>
+    </div>
+</div>
+
+<span class="subsection-title">Blockchain & Smart Contract Technologies</span>
+▶ Ethereum, Solidity, Web3 Integration
+▶ Cross-chain Protocol Development
+▶ Smart Contract Auditing & Security
+▶ DeFi Protocol Engineering
+▶ NFT Standard Implementation (ERC-721, ERC-1155)
+
+<span class="subsection-title">AI & Machine Learning Stack</span>
+▶ Custom Model Development & Training
+▶ Deep Learning Frameworks (TensorFlow, PyTorch)
+▶ Natural Language Processing
+▶ Computer Vision Applications
+▶ AI Model Optimization & Deployment
+
+<span class="subsection-title">Infrastructure & DevOps</span>
+▶ Docker, Kubernetes, Serverless Architecture
+▶ CI/CD Pipeline Implementation
+▶ Firebase, AWS, Google Cloud Platform
+▶ Database Technologies (SQL, NoSQL, Graph)
+▶ Server Framework Mastery (Express, Apache, Nginx, Flask)
+
+<span class="subsection-title">Frontend & UI Technologies</span>
+▶ React, Vue.js, Modern JavaScript Frameworks
+▶ Responsive Design & User Experience
+▶ Data Visualization & Analytics Dashboards
+▶ 3D Modeling & Graphics Design
+▶ Adobe Creative Suite Proficiency
+
+<div class="ascii-border">
+<div style="text-align: center; color: #dcdcaa; font-weight: 600; padding: 10px 0;">PROFESSIONAL EXPERIENCE</div>
+</div>
+
+<span class="name">Founder & Chief Technology Officer</span> │ <span class="string">Freelance Software Development Firm</span> │ <span class="comment">2017 - Present</span>
+
+<span class="subsection-title">┌─ Enterprise Blockchain Solutions</span>
+│ • Architected and deployed production-grade blockchain infrastructure for enterprise clients, 
+│   processing over <span class="number">$10M</span> in smart contract transactions with <span class="highlight">100% security record</span>
+│ • Collaborated directly with <span class="keyword">Ethereum founding team members</span> on blockchain development, smart 
+│   contract optimization, and compilation infrastructure improvements
+│ • Pioneered decentralized banking solutions and tokenized commodity platforms, revolutionizing 
+│   traditional financial workflows
+
+<span class="subsection-title">├─ High-Profile Client Partnerships</span>
+│ • Launched NFT platform for global music icon <span class="string">AKON</span>, delivering seamless user experience and 
+│   robust marketplace functionality
+│ • Developed blockchain solutions for <span class="string">Nike</span>, <span class="string">The Vatican</span> (Scholas Occurrentes charity for Pope 
+│   Francis), and entertainment figures including <span class="string">MF DOOM</span> and <span class="string">Terry Crews</span>
+│ • Generated over <span class="highlight">tens of millions</span> in NFT sales, custom smart contracts and marketplace 
+│   development for celebrity and corporate clients
+
+<span class="subsection-title">├─ Strategic Leadership & Team Management</span>
+│ • Led diverse development teams across startup to mid-size company environments, consistently 
+│   delivering projects on time and within budget
+│ • Managed full product lifecycle from conception to market launch, achieving <span class="highlight">100% client 
+│   success rate</span> across all engagements
+│ • Drove multiple startups to successful exits and facilitated over <span class="number">$50M</span> in total capital 
+│   raises through strategic technology leadership
+
+<span class="subsection-title">└─ Innovation & Research Partnerships</span>
+  • Partnered with <span class="keyword">Mattereum</span> on groundbreaking Real-World Asset (RWA) creation and 
+    tokenization initiatives
+  • Developed custom DeFi applications including sophisticated swap protocols and multi-chain 
+    NFT marketplaces
+  • Advanced agricultural and commodity tokenization platforms, creating new paradigms for 
+    asset digitization
+
+<div class="ascii-border">
+<div style="text-align: center; color: #dcdcaa; font-weight: 600; padding: 10px 0;">NOTABLE ACHIEVEMENTS</div>
+</div>
+
+<span class="achievement-icon">🏆</span> <span class="keyword">Perfect Success Record:</span> <span class="number">100%</span> project completion rate across all client engagements with 
+   zero security breaches
+
+<span class="achievement-icon">💰</span> <span class="keyword">Revenue Generation:</span> Facilitated over <span class="highlight">$50M</span> in startup capital raises through strategic 
+   technology leadership
+
+<span class="achievement-icon">🔒</span> <span class="keyword">Security Excellence:</span> Deployed smart contracts processing <span class="highlight">$10M+</span> in transactions with 
+   impeccable security record
+
+<span class="achievement-icon">🌟</span> <span class="keyword">Celebrity & Enterprise Partnerships:</span> Successfully launched platforms for global brands 
+   and entertainment icons
+
+<span class="achievement-icon">🚀</span> <span class="keyword">Innovation Leadership:</span> Pioneered multiple DeFi protocols and NFT marketplace 
+   implementations
+
+<span class="achievement-icon">📈</span> <span class="keyword">Scalability Expertise:</span> Consistently delivered enterprise-grade solutions capable of 
+   handling millions of users
+
+<div class="ascii-border">
+<div style="text-align: center; color: #dcdcaa; font-weight: 600; padding: 10px 0;">ACADEMIC CONTRIBUTIONS</div>
+</div>
+
+<span class="name">Guest Lecturer</span> │ <span class="string">Parsons School of Design</span> │ <span class="comment">New York, NY</span>
+
+<span class="keyword">Course:</span> <span class="string">Advanced Cryptography and Blockchain Applications</span>
+• Developed and delivered comprehensive curriculum on cryptographic principles and practical 
+  cryptographic building blocks, and their implementation in complex systems
+• Mentored students in understanding complex mathematical foundations of modern cryptographic 
+  systems
+
+<div class="ascii-border">
+<div style="text-align: center; color: #dcdcaa; font-weight: 600; padding: 10px 0;">PROFESSIONAL INTERESTS & INNOVATION FOCUS</div>
+</div>
+
+<span class="keyword">Financial Technology Evolution:</span> Exploring next-generation payment systems and decentralized 
+banking infrastructure
+
+<span class="keyword">Tokenization of Everything:</span> Advancing the frontier of asset digitization across industries
+
+<span class="keyword">AI-Powered Trading:</span> Developing sophisticated algorithmic trading systems and predictive 
+analytics
+
+<span class="keyword">Decentralized Autonomous Organizations (DAOs):</span> Contributing to governance and organizational 
+innovation
+
+<span class="keyword">Deep Learning Applications:</span> Researching practical applications of AI in financial and 
+blockchain domains
+
+<div class="ascii-border">
+<div style="text-align: center; color: #dcdcaa; font-weight: 600; padding: 10px 0;">PROFESSIONAL PHILOSOPHY</div>
+</div>
+
+<span class="comment">/*
+ * "Technology should serve humanity by creating more efficient, transparent, and equitable 
+ *  systems. Through careful engineering and strategic innovation, we can build solutions 
+ *  that not only solve today's challenges but anticipate tomorrow's opportunities."
+ */</span>
+
+<div class="ascii-border">
+<div style="text-align: center; color: #dcdcaa; font-weight: 600; padding: 10px 0;">AVAILABILITY</div>
+</div>
+
+<span class="name">Available for Strategic Consulting, Technical Leadership, and Full-Stack Development Projects</span>
+
+<span class="comment">References and Portfolio Available Upon Request</span>
+
+<span class="comment">EOF: sabin_hertz_resume.txt</span>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function createAsciiBorder() {
+            const container = document.getElementById('main-border');
+            const content = container.querySelector('.main-container');
+            
+            // Calculate dimensions
+            const rect = content.getBoundingClientRect();
+            const containerRect = container.getBoundingClientRect();
+            
+            // Calculate character width based on viewport
+            const viewportWidth = window.innerWidth;
+            let charWidth;
+            
+            if (viewportWidth <= 480) {
+                charWidth = Math.floor((viewportWidth - 20) / 8); // Smaller screens
+            } else if (viewportWidth <= 768) {
+                charWidth = Math.floor((viewportWidth - 40) / 10); // Medium screens
+            } else {
+                charWidth = Math.floor((viewportWidth - 80) / 12); // Large screens
+            }
+            
+            // Ensure minimum width
+            charWidth = Math.max(charWidth, 40);
+            
+            // Create border strings
+            const horizontal = '─'.repeat(charWidth);
+            const topBorder = '┌' + horizontal + '┐';
+            const bottomBorder = '└' + horizontal + '┘';
+            
+            // Create or update border elements
+            let topElement = container.querySelector('.ascii-top-border');
+            let bottomElement = container.querySelector('.ascii-bottom-border');
+            
+            if (!topElement) {
+                topElement = document.createElement('div');
+                topElement.className = 'ascii-top-border';
+                topElement.style.cssText = `
+                    position: absolute;
+                    top: -1px;
+                    left: 0;
+                    right: 0;
+                    color: #3e3e42;
+                    font-family: 'Consolas', 'Courier New', monospace;
+                    font-size: ${viewportWidth <= 480 ? '10px' : viewportWidth <= 768 ? '12px' : '14px'};
+                    line-height: 1;
+                    text-align: center;
+                    white-space: nowrap;
+                    overflow: hidden;
+                    z-index: 0;
+                `;
+                container.insertBefore(topElement, content);
+            }
+            
+            if (!bottomElement) {
+                bottomElement = document.createElement('div');
+                bottomElement.className = 'ascii-bottom-border';
+                bottomElement.style.cssText = `
+                    position: absolute;
+                    bottom: -1px;
+                    left: 0;
+                    right: 0;
+                    color: #3e3e42;
+                    font-family: 'Consolas', 'Courier New', monospace;
+                    font-size: ${viewportWidth <= 480 ? '10px' : viewportWidth <= 768 ? '12px' : '14px'};
+                    line-height: 1;
+                    text-align: center;
+                    white-space: nowrap;
+                    overflow: hidden;
+                    z-index: 0;
+                `;
+                container.appendChild(bottomElement);
+            }
+            
+            // Update border content
+            topElement.textContent = topBorder;
+            bottomElement.textContent = bottomBorder;
+            
+            // Create side borders
+            const contentHeight = content.offsetHeight;
+            const lineHeight = parseFloat(getComputedStyle(topElement).fontSize) * 1.2;
+            const numLines = Math.floor(contentHeight / lineHeight);
+            
+            let leftElement = container.querySelector('.ascii-left-border');
+            let rightElement = container.querySelector('.ascii-right-border');
+            
+            if (!leftElement) {
+                leftElement = document.createElement('div');
+                leftElement.className = 'ascii-left-border';
+                leftElement.style.cssText = `
+                    position: absolute;
+                    top: ${lineHeight}px;
+                    left: 0;
+                    color: #3e3e42;
+                    font-family: 'Consolas', 'Courier New', monospace;
+                    font-size: ${viewportWidth <= 480 ? '10px' : viewportWidth <= 768 ? '12px' : '14px'};
+                    line-height: ${lineHeight}px;
+                    z-index: 0;
+                `;
+                container.insertBefore(leftElement, content);
+            }
+            
+            if (!rightElement) {
+                rightElement = document.createElement('div');
+                rightElement.className = 'ascii-right-border';
+                rightElement.style.cssText = `
+                    position: absolute;
+                    top: ${lineHeight}px;
+                    right: 0;
+                    color: #3e3e42;
+                    font-family: 'Consolas', 'Courier New', monospace;
+                    font-size: ${viewportWidth <= 480 ? '10px' : viewportWidth <= 768 ? '12px' : '14px'};
+                    line-height: ${lineHeight}px;
+                    z-index: 0;
+                `;
+                container.insertBefore(rightElement, content);
+            }
+            
+            // Create side border content
+            const leftBorder = '│<br>'.repeat(Math.max(numLines - 2, 0));
+            const rightBorder = '│<br>'.repeat(Math.max(numLines - 2, 0));
+            
+            leftElement.innerHTML = leftBorder;
+            rightElement.innerHTML = rightBorder;
+        }
+        
+        // Initialize borders
+        document.addEventListener('DOMContentLoaded', createAsciiBorder);
+        
+        // Update borders on window resize
+        let resizeTimeout;
+        window.addEventListener('resize', () => {
+            clearTimeout(resizeTimeout);
+            resizeTimeout = setTimeout(createAsciiBorder, 100);
+        });
+        
+        // Initialize skill dropdowns
+        document.addEventListener('DOMContentLoaded', function() {
+            const skillDropdowns = document.querySelectorAll('.skill-dropdown');
+            
+            skillDropdowns.forEach(dropdown => {
+                const skillLevel = dropdown.querySelector('.skill-level');
+                
+                skillLevel.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    
+                    // Close all other dropdowns
+                    skillDropdowns.forEach(otherDropdown => {
+                        if (otherDropdown !== dropdown) {
+                            otherDropdown.classList.remove('active');
+                        }
+                    });
+                    
+                    // Toggle current dropdown
+                    dropdown.classList.toggle('active');
+                });
+            });
+            
+            // Close dropdowns when clicking outside
+            document.addEventListener('click', function() {
+                skillDropdowns.forEach(dropdown => {
+                    dropdown.classList.remove('active');
+                });
+            });
+            
+            // Prevent dropdown from closing when clicking inside content
+            document.querySelectorAll('.skill-content').forEach(content => {
+                content.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                });
+            });
+        });
+    </script>
+</body>
+</html>

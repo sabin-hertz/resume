@@ -1,0 +1,1568 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sabin Hertz - Senior Software Architect</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;600;700&display=swap');
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        :root {
+            --bg-primary: #1e1e1e;
+            --bg-secondary: #252526;
+            --bg-tertiary: #2d2d30;
+            --text-primary: #d4d4d4;
+            --text-secondary: #9d9d9d;
+            --accent-blue: #4fc1ff;
+            --accent-green: #4ec9b0;
+            --accent-yellow: #dcdcaa;
+            --accent-orange: #ce9178;
+            --accent-purple: #c586c0;
+            --accent-red: #f44747;
+            --border-color: #3e3e42;
+            --scrollbar-thumb: #424242;
+            --scrollbar-track: #1e1e1e;
+        }
+        
+        body {
+            font-family: 'JetBrains Mono', 'Consolas', 'Monaco', monospace;
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.6;
+            font-size: 14px;
+            overflow: hidden;
+        }
+        
+        .container {
+            display: grid;
+            grid-template-columns: 380px 1fr;
+            grid-template-rows: auto 1fr;
+            height: 100vh;
+            gap: 0;
+        }
+        
+        .header {
+            grid-column: 1 / -1;
+            background-color: var(--bg-secondary);
+            border-bottom: 2px solid var(--border-color);
+            padding: 20px;
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+        
+        .profile-image {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            border: 2px solid var(--accent-blue);
+            background-color: var(--bg-tertiary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            color: var(--accent-blue);
+            flex-shrink: 0;
+            font-weight: 600;
+            overflow: hidden;
+        }
+
+        .profile-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 50%;
+        }
+        
+        .header-content {
+            flex: 1;
+        }
+        
+        .name {
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--accent-blue);
+            margin-bottom: 5px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+        
+        .title {
+            font-size: 14px;
+            color: var(--accent-green);
+            font-weight: 500;
+        }
+        
+        .sidebar {
+            background-color: var(--bg-secondary);
+            border-right: 2px solid var(--border-color);
+            overflow-y: auto;
+            padding: 0;
+            position: relative;
+        }
+        
+        .sidebar::before {
+            content: '';
+            position: absolute;
+            right: 0;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: linear-gradient(180deg, var(--accent-blue), var(--accent-purple));
+        }
+        
+        .main-content {
+            background-color: var(--bg-primary);
+            overflow-y: auto;
+            padding: 0;
+        }
+        
+        .section {
+            margin-bottom: 25px;
+        }
+        
+        .section-header {
+            background-color: var(--bg-tertiary);
+            padding: 12px 20px;
+            border-left: 4px solid var(--accent-yellow);
+            margin-bottom: 15px;
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--accent-yellow);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        
+        .section-content {
+            padding: 0 20px;
+            font-size: 14px;
+        }
+        
+        .sidebar .section-header {
+            border-left: none;
+            border-bottom: 2px solid var(--accent-green);
+            color: var(--accent-green);
+            font-size: 14px;
+            padding: 12px 20px 8px 20px;
+        }
+        
+        .ascii-border {
+            font-family: 'JetBrains Mono', monospace;
+            color: var(--border-color);
+            line-height: 1;
+            margin: 15px 0;
+            font-size: 14px;
+        }
+        
+        .skill-category {
+            margin-bottom: 20px;
+        }
+        
+        .skill-category h4 {
+            color: var(--accent-purple);
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 10px;
+            text-transform: uppercase;
+        }
+        
+        .skill-item {
+            margin-bottom: 8px;
+            padding: 8px 12px;
+            background-color: var(--bg-primary);
+            border-left: 3px solid var(--accent-blue);
+            font-size: 14px;
+            line-height: 1.4;
+        }
+        
+                .skill-level {
+            color: var(--accent-orange);
+            font-size: 14px;
+            font-weight: 400;
+        }
+
+        .skill-level-dropdown {
+            padding: 4px 12px;
+            border-radius: 16px;
+            font-size: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+            margin-bottom: 12px;
+            display: inline-block;
+            letter-spacing: 0.5px;
+        }
+
+        .skill-level-dropdown.master {
+            background-color: var(--accent-green);
+            color: var(--bg-primary);
+            box-shadow: 0 2px 8px rgba(78, 201, 176, 0.3);
+        }
+
+        .skill-level-dropdown.expert {
+            background-color: var(--accent-blue);
+            color: var(--bg-primary);
+            box-shadow: 0 2px 8px rgba(79, 193, 255, 0.3);
+        }
+
+        .skill-level-dropdown.advanced {
+            background-color: var(--accent-orange);
+            color: var(--bg-primary);
+            box-shadow: 0 2px 8px rgba(206, 145, 120, 0.3);
+        }
+
+        .experience-item {
+            margin-bottom: 25px;
+            padding: 20px;
+            background-color: var(--bg-secondary);
+            border-radius: 4px;
+            border-left: 4px solid var(--accent-blue);
+        }
+        
+        .experience-title {
+            color: var(--accent-blue);
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+        
+        .experience-company {
+            color: var(--accent-green);
+            font-size: 14px;
+            margin-bottom: 5px;
+        }
+        
+        .experience-date {
+            color: var(--text-secondary);
+            font-size: 14px;
+            margin-bottom: 15px;
+        }
+        
+        .experience-description {
+            font-size: 14px;
+            line-height: 1.7;
+        }
+        
+        .achievement {
+            background-color: var(--bg-tertiary);
+            padding: 15px;
+            margin: 10px 0;
+            border-left: 3px solid var(--accent-yellow);
+            border-radius: 3px;
+            font-size: 14px;
+        }
+        
+        .achievement-icon {
+            color: var(--accent-yellow);
+            margin-right: 10px;
+        }
+        
+        .highlight {
+            color: var(--accent-orange);
+            font-weight: 500;
+        }
+        
+        .keyword {
+            color: var(--accent-purple);
+            font-weight: 500;
+        }
+        
+        .number {
+            color: var(--accent-green);
+            font-weight: 500;
+        }
+        
+        .string {
+            color: var(--accent-orange);
+        }
+        
+        .comment {
+            color: var(--text-secondary);
+            font-style: italic;
+        }
+        
+        .code-block {
+            background-color: var(--bg-tertiary);
+            padding: 15px;
+            border-radius: 4px;
+            border-left: 4px solid var(--accent-blue);
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 14px;
+            margin: 15px 0;
+            line-height: 1.5;
+        }
+        
+        .subsection {
+            margin-bottom: 20px;
+        }
+        
+        .subsection-title {
+            color: var(--accent-purple);
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 10px;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 5px;
+        }
+
+        .tech-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin: 15px 0;
+        }
+
+        .tech-category {
+            background-color: var(--bg-secondary);
+            padding: 15px;
+            border-radius: 4px;
+            border-left: 3px solid var(--accent-blue);
+        }
+
+        .tech-category h5 {
+            color: var(--accent-green);
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 10px;
+            text-transform: uppercase;
+        }
+
+        .tech-list {
+            list-style: none;
+            padding: 0;
+        }
+
+        .tech-list li {
+            color: var(--text-primary);
+            font-size: 14px;
+            margin-bottom: 5px;
+            padding-left: 15px;
+            position: relative;
+        }
+
+        .tech-list li::before {
+            content: "▶";
+            position: absolute;
+            left: 0;
+            color: var(--accent-orange);
+        }
+        
+        ::-webkit-scrollbar {
+            width: 12px;
+        }
+        
+        ::-webkit-scrollbar-track {
+            background: var(--scrollbar-track);
+        }
+        
+        ::-webkit-scrollbar-thumb {
+            background: var(--scrollbar-thumb);
+            border-radius: 6px;
+        }
+        
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--accent-blue);
+        }
+        
+        .quote {
+            font-style: italic;
+            color: var(--accent-green);
+            background-color: var(--bg-tertiary);
+            padding: 20px;
+            border-left: 4px solid var(--accent-green);
+            margin: 20px 0;
+            border-radius: 4px;
+            font-size: 14px;
+        }
+        
+        @media (max-width: 768px) {
+            .container {
+                grid-template-columns: 1fr;
+                grid-template-rows: auto auto 1fr;
+            }
+            
+            .sidebar {
+                max-height: 300px;
+                border-right: none;
+                border-bottom: 2px solid var(--border-color);
+            }
+            
+            .header {
+                flex-direction: column;
+                text-align: center;
+                gap: 15px;
+            }
+            
+            .name {
+                font-size: 16px;
+            }
+            
+            .title {
+                font-size: 14px;
+            }
+
+            .tech-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        .terminal-prompt {
+            color: var(--accent-green);
+            font-weight: 600;
+        }
+        
+        .file-tree {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 14px;
+            line-height: 1.4;
+        }
+        
+        .tree-line {
+            color: var(--border-color);
+        }
+        
+        .contact-info {
+            background-color: var(--bg-primary);
+            padding: 15px;
+            margin: 15px 0;
+            border: 1px dashed var(--border-color);
+            font-size: 14px;
+        }
+        
+        .contact-info .terminal-prompt {
+            margin-bottom: 10px;
+        }
+        
+        .status-bar {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 24px;
+            background-color: var(--accent-blue);
+            color: var(--bg-primary);
+            display: flex;
+            align-items: center;
+            padding: 0 15px;
+            font-size: 14px;
+            font-weight: 500;
+            z-index: 1000;
+        }
+
+        ul {
+            margin-left: 20px;
+            margin-top: 10px;
+        }
+
+        li {
+            font-size: 14px;
+            margin-bottom: 5px;
+        }
+
+        p {
+            font-size: 14px;
+            margin-bottom: 10px;
+        }
+
+        /* Interactive dropdown styles */
+        .category-header {
+            cursor: pointer;
+            transition: all 0.2s ease;
+            user-select: none;
+        }
+
+        .category-header:hover {
+            background-color: var(--bg-primary);
+            color: var(--accent-blue);
+        }
+
+        .dropdown-arrow {
+            float: right;
+            transition: transform 0.2s ease;
+            font-size: 12px;
+        }
+
+        .dropdown-arrow.rotated {
+            transform: rotate(-90deg);
+        }
+
+        .category-content {
+            max-height: 1000px;
+            overflow: hidden;
+            transition: max-height 0.3s ease;
+        }
+
+        .category-content.collapsed {
+            max-height: 0;
+        }
+
+        .language-item {
+            background-color: var(--bg-primary);
+            margin: 8px 0;
+            border-radius: 4px;
+            border-left: 3px solid var(--accent-blue);
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .language-item:hover {
+            background-color: var(--bg-tertiary);
+            border-left-color: var(--accent-yellow);
+        }
+
+        .language-header {
+            padding: 12px 15px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .language-name {
+            color: var(--text-primary);
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+
+
+        .dropdown-indicator {
+            color: var(--accent-purple);
+            font-size: 12px;
+            transition: transform 0.2s ease;
+        }
+
+        .dropdown-indicator.expanded {
+            transform: rotate(90deg);
+        }
+
+        .skill-info {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease, padding 0.3s ease;
+            padding: 0 15px;
+            background-color: var(--bg-secondary);
+            border-top: 1px solid var(--border-color);
+        }
+
+        .skill-info.expanded {
+            max-height: 500px;
+            padding: 15px;
+        }
+
+        .skill-info p {
+            margin-bottom: 12px;
+            color: var(--text-primary);
+            line-height: 1.5;
+        }
+
+        .skill-info ul {
+            margin: 12px 0;
+            padding-left: 20px;
+        }
+
+        .skill-info li {
+            color: var(--text-secondary);
+            margin-bottom: 6px;
+            font-size: 13px;
+            line-height: 1.4;
+        }
+
+        .project-links {
+            margin-top: 15px;
+            padding-top: 12px;
+            border-top: 1px solid var(--border-color);
+        }
+
+        .project-link {
+            display: inline-block;
+            color: var(--accent-green);
+            text-decoration: none;
+            font-size: 13px;
+            margin-right: 15px;
+            margin-bottom: 8px;
+            padding: 4px 8px;
+            border: 1px solid var(--accent-green);
+            border-radius: 3px;
+            transition: all 0.2s ease;
+        }
+
+        .project-link:hover {
+            background-color: var(--accent-green);
+            color: var(--bg-primary);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <div class="profile-image">
+                <img src="headshot.jpg" alt="Sabin Hertz Profile Photo">
+            </div>
+            <div class="header-content">
+                <div class="name">Sabin Hertz</div>
+                <div class="title">Senior Software Architect | Blockchain Engineer | AI Strategist</div>
+            </div>
+        </header>
+        
+        <aside class="sidebar">
+            <div class="section">
+                <div class="section-header">├─ TECHNICAL_STACK</div>
+                <div class="section-content">
+                    <div class="skill-category">
+                        <h4 class="category-header" onclick="toggleCategory('programming')">│ Programming Languages <span class="dropdown-arrow" id="programming-arrow">▼</span></h4>
+                        <div class="category-content" id="programming-content">
+                            <div class="language-item" onclick="toggleSkillInfo('cpp')">
+                                <div class="language-header">
+                                    <span class="language-name">C++</span>
+                                    <span class="dropdown-indicator">▶</span>
+                                </div>
+                                <div class="skill-info" id="cpp-info">
+                                    <span class="skill-level-dropdown master">Master</span>
+                                    <p><strong>20+ Years Experience</strong> - Expert in systems programming, performance optimization, and large-scale application development.</p>
+                                    <ul>
+                                        <li>High-frequency trading systems</li>
+                                        <li>Blockchain core development</li>
+                                        <li>Real-time financial applications</li>
+                                    </ul>
+                                    <div class="project-links">
+                                        <a href="#" class="project-link">Trading Engine Project →</a>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="language-item" onclick="toggleSkillInfo('python')">
+                                <div class="language-header">
+                                    <span class="language-name">Python</span>
+                                    <span class="dropdown-indicator">▶</span>
+                                </div>
+                                <div class="skill-info" id="python-info">
+                                    <span class="skill-level-dropdown master">Master</span>
+                                    <p><strong>15+ Years Experience</strong> - Full-stack development, AI/ML, data science, and automation.</p>
+                                    <ul>
+                                        <li>Machine learning model development</li>
+                                        <li>Web frameworks (Django, Flask, FastAPI)</li>
+                                        <li>Financial data analysis and backtesting</li>
+                                        <li>Blockchain integration and smart contract interaction</li>
+                                    </ul>
+                                    <div class="project-links">
+                                        <a href="#" class="project-link">AI Trading Bot →</a>
+                                        <a href="#" class="project-link">DeFi Analytics Platform →</a>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="language-item" onclick="toggleSkillInfo('javascript')">
+                                <div class="language-header">
+                                    <span class="language-name">JavaScript/TypeScript</span>
+                                    <span class="dropdown-indicator">▶</span>
+                                </div>
+                                <div class="skill-info" id="javascript-info">
+                                    <span class="skill-level-dropdown master">Master</span>
+                                    <p><strong>12+ Years Experience</strong> - Modern web development, Node.js backend services, and blockchain integration.</p>
+                                    <ul>
+                                        <li>React/Vue.js enterprise applications</li>
+                                        <li>Node.js microservices architecture</li>
+                                        <li>Web3 integration and dApp development</li>
+                                        <li>Real-time trading interfaces</li>
+                                    </ul>
+                                    <div class="project-links">
+                                        <a href="#" class="project-link">NFT Marketplace for AKON →</a>
+                                        <a href="#" class="project-link">DeFi Trading Platform →</a>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="language-item" onclick="toggleSkillInfo('rust')">
+                                <div class="language-header">
+                                    <span class="language-name">Rust</span>
+                                    <span class="dropdown-indicator">▶</span>
+                                </div>
+                                <div class="skill-info" id="rust-info">
+                                    <span class="skill-level-dropdown expert">Expert</span>
+                                    <p><strong>5+ Years Experience</strong> - Systems programming, blockchain development, and performance-critical applications.</p>
+                                    <ul>
+                                        <li>Solana program development</li>
+                                        <li>High-performance trading algorithms</li>
+                                        <li>Cryptographic protocol implementation</li>
+                                        <li>WebAssembly compilation targets</li>
+                                    </ul>
+                                    <div class="project-links">
+                                        <a href="#" class="project-link">Solana DEX Protocol →</a>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="language-item" onclick="toggleSkillInfo('solidity')">
+                                <div class="language-header">
+                                    <span class="language-name">Solidity</span>
+                                    <span class="dropdown-indicator">▶</span>
+                                </div>
+                                <div class="skill-info" id="solidity-info">
+                                    <span class="skill-level-dropdown expert">Expert</span>
+                                    <p><strong>7+ Years Experience</strong> - Smart contract development, DeFi protocols, and security auditing.</p>
+                                    <ul>
+                                        <li>$10M+ in deployed contract value</li>
+                                        <li>Zero security breaches across all deployments</li>
+                                        <li>Custom ERC standards development</li>
+                                        <li>Gas optimization and security best practices</li>
+                                    </ul>
+                                    <div class="project-links">
+                                        <a href="#" class="project-link">Enterprise Smart Contracts →</a>
+                                        <a href="#" class="project-link">NFT Collection Contracts →</a>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="language-item" onclick="toggleSkillInfo('go')">
+                                <div class="language-header">
+                                    <span class="language-name">Go</span>
+                                    <span class="dropdown-indicator">▶</span>
+                                </div>
+                                <div class="skill-info" id="go-info">
+                                    <span class="skill-level-dropdown expert">Expert</span>
+                                    <p><strong>6+ Years Experience</strong> - Backend services, microservices, and blockchain infrastructure.</p>
+                                    <ul>
+                                        <li>High-performance API development</li>
+                                        <li>Kubernetes-native applications</li>
+                                        <li>Blockchain node development</li>
+                                        <li>Concurrent system design</li>
+                                    </ul>
+                                    <div class="project-links">
+                                        <a href="#" class="project-link">Trading Engine Backend →</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="ascii-border">│ ═══════════════════════════════</div>
+                    
+                    <div class="skill-category">
+                        <h4 class="category-header" onclick="toggleCategory('blockchain')">│ Blockchain Technologies <span class="dropdown-arrow" id="blockchain-arrow">▼</span></h4>
+                        <div class="category-content" id="blockchain-content">
+                            <div class="language-item" onclick="toggleSkillInfo('ethereum')">
+                                <div class="language-header">
+                                    <span class="language-name">Ethereum & Solidity</span>
+                                    <span class="dropdown-indicator">▶</span>
+                                </div>
+                                <div class="skill-info" id="ethereum-info">
+                                    <span class="skill-level-dropdown expert">Expert</span>
+                                    <p><strong>7+ Years Experience</strong> - Core Ethereum development, smart contract architecture, and DeFi protocol engineering.</p>
+                                    <ul>
+                                        <li>Collaborated with Ethereum founding team</li>
+                                        <li>$10M+ in deployed smart contract value</li>
+                                        <li>Zero security breaches across all deployments</li>
+                                        <li>Custom ERC standard implementations</li>
+                                    </ul>
+                                    <div class="project-links">
+                                        <a href="#" class="project-link">Enterprise Smart Contracts →</a>
+                                        <a href="#" class="project-link">DeFi Protocol Suite →</a>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="language-item" onclick="toggleSkillInfo('web3')">
+                                <div class="language-header">
+                                    <span class="language-name">Web3 Integration</span>
+                                    <span class="dropdown-indicator">▶</span>
+                                </div>
+                                <div class="skill-info" id="web3-info">
+                                    <span class="skill-level-dropdown expert">Expert</span>
+                                    <p><strong>6+ Years Experience</strong> - Full-stack Web3 application development and blockchain integration.</p>
+                                    <ul>
+                                        <li>Multi-chain dApp development</li>
+                                        <li>Wallet integration (MetaMask, WalletConnect)</li>
+                                        <li>NFT marketplace development</li>
+                                        <li>Real-time blockchain data indexing</li>
+                                    </ul>
+                                    <div class="project-links">
+                                        <a href="#" class="project-link">AKON NFT Platform →</a>
+                                        <a href="#" class="project-link">Multi-chain DEX →</a>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="language-item" onclick="toggleSkillInfo('crosschain')">
+                                <div class="language-header">
+                                    <span class="language-name">Cross-chain Protocols</span>
+                                    <span class="dropdown-indicator">▶</span>
+                                </div>
+                                <div class="skill-info" id="crosschain-info">
+                                    <span class="skill-level-dropdown advanced">Advanced</span>
+                                    <p><strong>4+ Years Experience</strong> - Inter-blockchain communication and asset bridging solutions.</p>
+                                    <ul>
+                                        <li>Bridge protocol development</li>
+                                        <li>Multi-chain asset management</li>
+                                        <li>Layer 2 scaling solutions</li>
+                                        <li>Atomic swap implementations</li>
+                                    </ul>
+                                    <div class="project-links">
+                                        <a href="#" class="project-link">Cross-chain Bridge →</a>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="language-item" onclick="toggleSkillInfo('auditing')">
+                                <div class="language-header">
+                                    <span class="language-name">Smart Contract Auditing</span>
+                                    <span class="dropdown-indicator">▶</span>
+                                </div>
+                                <div class="skill-info" id="auditing-info">
+                                    <span class="skill-level-dropdown expert">Expert</span>
+                                    <p><strong>7+ Years Experience</strong> - Security analysis, vulnerability assessment, and contract optimization.</p>
+                                    <ul>
+                                        <li>Formal verification methods</li>
+                                        <li>Gas optimization techniques</li>
+                                        <li>Security vulnerability identification</li>
+                                        <li>Code review and best practices</li>
+                                    </ul>
+                                    <div class="project-links">
+                                        <a href="#" class="project-link">Security Audit Reports →</a>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="language-item" onclick="toggleSkillInfo('defi')">
+                                <div class="language-header">
+                                    <span class="language-name">DeFi Protocol Engineering</span>
+                                    <span class="dropdown-indicator">▶</span>
+                                </div>
+                                <div class="skill-info" id="defi-info">
+                                    <span class="skill-level-dropdown expert">Expert</span>
+                                    <p><strong>5+ Years Experience</strong> - Decentralized finance protocol architecture and implementation.</p>
+                                    <ul>
+                                        <li>AMM and liquidity pool design</li>
+                                        <li>Yield farming mechanisms</li>
+                                        <li>Lending and borrowing protocols</li>
+                                        <li>Tokenomics and governance systems</li>
+                                    </ul>
+                                    <div class="project-links">
+                                        <a href="#" class="project-link">Custom DEX Protocol →</a>
+                                        <a href="#" class="project-link">Yield Farming Platform →</a>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="language-item" onclick="toggleSkillInfo('nft')">
+                                <div class="language-header">
+                                    <span class="language-name">NFT Standards (ERC-721/1155)</span>
+                                    <span class="dropdown-indicator">▶</span>
+                                </div>
+                                <div class="skill-info" id="nft-info">
+                                    <span class="skill-level-dropdown expert">Expert</span>
+                                    <p><strong>5+ Years Experience</strong> - NFT standard implementation and marketplace development.</p>
+                                    <ul>
+                                        <li>Custom NFT contract development</li>
+                                        <li>Marketplace and auction systems</li>
+                                        <li>Metadata management and IPFS integration</li>
+                                        <li>Celebrity and enterprise NFT launches</li>
+                                    </ul>
+                                    <div class="project-links">
+                                        <a href="#" class="project-link">AKON NFT Collection →</a>
+                                        <a href="#" class="project-link">Nike NFT Platform →</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="ascii-border">│ ═══════════════════════════════</div>
+                    
+                    <div class="skill-category">
+                        <h4 class="category-header" onclick="toggleCategory('ai')">│ AI & Machine Learning <span class="dropdown-arrow" id="ai-arrow">▼</span></h4>
+                        <div class="category-content" id="ai-content">
+                            <div class="language-item" onclick="toggleSkillInfo('models')">
+                                <div class="language-header">
+                                    <span class="language-name">Custom Model Development</span>
+                                    <span class="dropdown-indicator">▶</span>
+                                </div>
+                                <div class="skill-info" id="models-info">
+                                    <span class="skill-level-dropdown expert">Expert</span>
+                                    <p><strong>8+ Years Experience</strong> - End-to-end AI model development for financial and trading applications.</p>
+                                    <ul>
+                                        <li>Financial prediction models</li>
+                                        <li>Trading algorithm development</li>
+                                        <li>Risk assessment systems</li>
+                                        <li>Custom neural network architectures</li>
+                                    </ul>
+                                    <div class="project-links">
+                                        <a href="#" class="project-link">AI Trading Bot →</a>
+                                        <a href="#" class="project-link">Financial Prediction Engine →</a>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="language-item" onclick="toggleSkillInfo('frameworks')">
+                                <div class="language-header">
+                                    <span class="language-name">TensorFlow, PyTorch</span>
+                                    <span class="dropdown-indicator">▶</span>
+                                </div>
+                                <div class="skill-info" id="frameworks-info">
+                                    <span class="skill-level-dropdown expert">Expert</span>
+                                    <p><strong>7+ Years Experience</strong> - Deep learning framework expertise for production AI systems.</p>
+                                    <ul>
+                                        <li>Large-scale model training</li>
+                                        <li>Distributed computing setups</li>
+                                        <li>Model optimization and quantization</li>
+                                        <li>GPU cluster management</li>
+                                    </ul>
+                                    <div class="project-links">
+                                        <a href="#" class="project-link">ML Infrastructure →</a>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="language-item" onclick="toggleSkillInfo('deeplearning')">
+                                <div class="language-header">
+                                    <span class="language-name">Deep Learning Architecture</span>
+                                    <span class="dropdown-indicator">▶</span>
+                                </div>
+                                <div class="skill-info" id="deeplearning-info">
+                                    <span class="skill-level-dropdown expert">Expert</span>
+                                    <p><strong>6+ Years Experience</strong> - Advanced neural network design and implementation.</p>
+                                    <ul>
+                                        <li>Transformer and attention mechanisms</li>
+                                        <li>Convolutional neural networks</li>
+                                        <li>Recurrent and LSTM architectures</li>
+                                        <li>Custom loss functions and optimizers</li>
+                                    </ul>
+                                    <div class="project-links">
+                                        <a href="#" class="project-link">Custom Architecture Designs →</a>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="language-item" onclick="toggleSkillInfo('nlp')">
+                                <div class="language-header">
+                                    <span class="language-name">Natural Language Processing</span>
+                                    <span class="dropdown-indicator">▶</span>
+                                </div>
+                                <div class="skill-info" id="nlp-info">
+                                    <span class="skill-level-dropdown advanced">Advanced</span>
+                                    <p><strong>5+ Years Experience</strong> - Text processing, sentiment analysis, and language model fine-tuning.</p>
+                                    <ul>
+                                        <li>Financial news sentiment analysis</li>
+                                        <li>Document processing and extraction</li>
+                                        <li>Chatbot and conversational AI</li>
+                                        <li>Custom tokenization and embeddings</li>
+                                    </ul>
+                                    <div class="project-links">
+                                        <a href="#" class="project-link">Financial NLP System →</a>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="language-item" onclick="toggleSkillInfo('vision')">
+                                <div class="language-header">
+                                    <span class="language-name">Computer Vision</span>
+                                    <span class="dropdown-indicator">▶</span>
+                                </div>
+                                <div class="skill-info" id="vision-info">
+                                    <span class="skill-level-dropdown advanced">Advanced</span>
+                                    <p><strong>4+ Years Experience</strong> - Image processing, object detection, and visual analysis systems.</p>
+                                    <ul>
+                                        <li>Chart pattern recognition</li>
+                                        <li>Document image processing</li>
+                                        <li>Real-time video analysis</li>
+                                        <li>Custom CNN architectures</li>
+                                    </ul>
+                                    <div class="project-links">
+                                        <a href="#" class="project-link">Chart Analysis AI →</a>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="language-item" onclick="toggleSkillInfo('optimization')">
+                                <div class="language-header">
+                                    <span class="language-name">AI Model Optimization</span>
+                                    <span class="dropdown-indicator">▶</span>
+                                </div>
+                                <div class="skill-info" id="optimization-info">
+                                    <span class="skill-level-dropdown expert">Expert</span>
+                                    <p><strong>6+ Years Experience</strong> - Performance optimization and deployment strategies for AI models.</p>
+                                    <ul>
+                                        <li>Model compression and pruning</li>
+                                        <li>Quantization and edge deployment</li>
+                                        <li>Hyperparameter optimization</li>
+                                        <li>Production monitoring and A/B testing</li>
+                                    </ul>
+                                    <div class="project-links">
+                                        <a href="#" class="project-link">Model Optimization Framework →</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="ascii-border">│ ═══════════════════════════════</div>
+                    
+                    <div class="skill-category">
+                        <h4 class="category-header" onclick="toggleCategory('infrastructure')">│ Infrastructure & Cloud <span class="dropdown-arrow" id="infrastructure-arrow">▼</span></h4>
+                        <div class="category-content" id="infrastructure-content">
+                            <div class="language-item" onclick="toggleSkillInfo('containers')">
+                                <div class="language-header">
+                                    <span class="language-name">Docker, Kubernetes</span>
+                                    <span class="dropdown-indicator">▶</span>
+                                </div>
+                                <div class="skill-info" id="containers-info">
+                                    <span class="skill-level-dropdown expert">Expert</span>
+                                    <p><strong>8+ Years Experience</strong> - Container orchestration and microservices architecture.</p>
+                                    <ul>
+                                        <li>Production Kubernetes cluster management</li>
+                                        <li>Helm chart development and deployment</li>
+                                        <li>Container security and optimization</li>
+                                        <li>Multi-cloud container strategies</li>
+                                    </ul>
+                                    <div class="project-links">
+                                        <a href="#" class="project-link">Enterprise K8s Platform →</a>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="language-item" onclick="toggleSkillInfo('serverless')">
+                                <div class="language-header">
+                                    <span class="language-name">Serverless Architecture</span>
+                                    <span class="dropdown-indicator">▶</span>
+                                </div>
+                                <div class="skill-info" id="serverless-info">
+                                    <span class="skill-level-dropdown expert">Expert</span>
+                                    <p><strong>6+ Years Experience</strong> - Cloud-native serverless application development.</p>
+                                    <ul>
+                                        <li>AWS Lambda and Google Cloud Functions</li>
+                                        <li>Event-driven architecture design</li>
+                                        <li>Auto-scaling and cost optimization</li>
+                                        <li>Serverless database integration</li>
+                                    </ul>
+                                    <div class="project-links">
+                                        <a href="#" class="project-link">Serverless Trading API →</a>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="language-item" onclick="toggleSkillInfo('cicd')">
+                                <div class="language-header">
+                                    <span class="language-name">CI/CD Pipelines</span>
+                                    <span class="dropdown-indicator">▶</span>
+                                </div>
+                                <div class="skill-info" id="cicd-info">
+                                    <span class="skill-level-dropdown expert">Expert</span>
+                                    <p><strong>7+ Years Experience</strong> - Automated deployment and testing infrastructure.</p>
+                                    <ul>
+                                        <li>GitHub Actions and GitLab CI</li>
+                                        <li>Automated testing and quality gates</li>
+                                        <li>Blue-green and canary deployments</li>
+                                        <li>Infrastructure as Code (Terraform)</li>
+                                    </ul>
+                                    <div class="project-links">
+                                        <a href="#" class="project-link">Enterprise CI/CD Framework →</a>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="language-item" onclick="toggleSkillInfo('cloud')">
+                                <div class="language-header">
+                                    <span class="language-name">AWS, GCP, Firebase</span>
+                                    <span class="dropdown-indicator">▶</span>
+                                </div>
+                                <div class="skill-info" id="cloud-info">
+                                    <span class="skill-level-dropdown expert">Expert</span>
+                                    <p><strong>9+ Years Experience</strong> - Multi-cloud architecture and platform engineering.</p>
+                                    <ul>
+                                        <li>Enterprise cloud migration strategies</li>
+                                        <li>Cost optimization and resource management</li>
+                                        <li>Security and compliance implementation</li>
+                                        <li>Real-time data processing pipelines</li>
+                                    </ul>
+                                    <div class="project-links">
+                                        <a href="#" class="project-link">Multi-cloud Trading Platform →</a>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="language-item" onclick="toggleSkillInfo('databases')">
+                                <div class="language-header">
+                                    <span class="language-name">SQL, NoSQL, Graph DBs</span>
+                                    <span class="dropdown-indicator">▶</span>
+                                </div>
+                                <div class="skill-info" id="databases-info">
+                                    <span class="skill-level-dropdown expert">Expert</span>
+                                    <p><strong>10+ Years Experience</strong> - Database design, optimization, and management.</p>
+                                    <ul>
+                                        <li>PostgreSQL, MySQL performance tuning</li>
+                                        <li>MongoDB, Redis, Cassandra</li>
+                                        <li>Neo4j graph database modeling</li>
+                                        <li>Real-time analytics and data warehousing</li>
+                                    </ul>
+                                    <div class="project-links">
+                                        <a href="#" class="project-link">Financial Data Architecture →</a>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="language-item" onclick="toggleSkillInfo('webservers')">
+                                <div class="language-header">
+                                    <span class="language-name">Express, Apache, Nginx, Flask</span>
+                                    <span class="dropdown-indicator">▶</span>
+                                </div>
+                                <div class="skill-info" id="webservers-info">
+                                    <span class="skill-level-dropdown expert">Expert</span>
+                                    <p><strong>12+ Years Experience</strong> - Web server configuration and high-performance API development.</p>
+                                    <ul>
+                                        <li>High-availability load balancing</li>
+                                        <li>SSL/TLS and security hardening</li>
+                                        <li>API gateway and rate limiting</li>
+                                        <li>WebSocket and real-time communication</li>
+                                    </ul>
+                                    <div class="project-links">
+                                        <a href="#" class="project-link">High-Performance Trading API →</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="ascii-border">│ ═══════════════════════════════</div>
+                    
+                    <div class="skill-category">
+                        <h4 class="category-header" onclick="toggleCategory('frontend')">│ Frontend & UI <span class="dropdown-arrow" id="frontend-arrow">▼</span></h4>
+                        <div class="category-content" id="frontend-content">
+                            <div class="language-item" onclick="toggleSkillInfo('react')">
+                                <div class="language-header">
+                                    <span class="language-name">React, Vue.js</span>
+                                    <span class="dropdown-indicator">▶</span>
+                                </div>
+                                <div class="skill-info" id="react-info">
+                                    <span class="skill-level-dropdown expert">Expert</span>
+                                    <p><strong>8+ Years Experience</strong> - Modern frontend framework development for enterprise applications.</p>
+                                    <ul>
+                                        <li>Complex state management (Redux, Vuex)</li>
+                                        <li>Component library development</li>
+                                        <li>Performance optimization and SSR</li>
+                                        <li>Mobile-responsive web applications</li>
+                                    </ul>
+                                    <div class="project-links">
+                                        <a href="#" class="project-link">Trading Platform UI →</a>
+                                        <a href="#" class="project-link">NFT Marketplace Frontend →</a>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="language-item" onclick="toggleSkillInfo('jsframeworks')">
+                                <div class="language-header">
+                                    <span class="language-name">Modern JS Frameworks</span>
+                                    <span class="dropdown-indicator">▶</span>
+                                </div>
+                                <div class="skill-info" id="jsframeworks-info">
+                                    <span class="skill-level-dropdown expert">Expert</span>
+                                    <p><strong>10+ Years Experience</strong> - Full-stack JavaScript development across multiple frameworks.</p>
+                                    <ul>
+                                        <li>Next.js, Nuxt.js for SSR applications</li>
+                                        <li>Angular for enterprise applications</li>
+                                        <li>Svelte for high-performance UIs</li>
+                                        <li>TypeScript for type-safe development</li>
+                                    </ul>
+                                    <div class="project-links">
+                                        <a href="#" class="project-link">Enterprise Dashboard →</a>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="language-item" onclick="toggleSkillInfo('responsive')">
+                                <div class="language-header">
+                                    <span class="language-name">Responsive Design</span>
+                                    <span class="dropdown-indicator">▶</span>
+                                </div>
+                                <div class="skill-info" id="responsive-info">
+                                    <span class="skill-level-dropdown expert">Expert</span>
+                                    <p><strong>12+ Years Experience</strong> - Cross-platform UI design and mobile-first development.</p>
+                                    <ul>
+                                        <li>CSS Grid and Flexbox mastery</li>
+                                        <li>Mobile-first design principles</li>
+                                        <li>Progressive Web App development</li>
+                                        <li>Cross-browser compatibility</li>
+                                    </ul>
+                                    <div class="project-links">
+                                        <a href="#" class="project-link">Mobile Trading App →</a>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="language-item" onclick="toggleSkillInfo('visualization')">
+                                <div class="language-header">
+                                    <span class="language-name">Data Visualization</span>
+                                    <span class="dropdown-indicator">▶</span>
+                                </div>
+                                <div class="skill-info" id="visualization-info">
+                                    <span class="skill-level-dropdown expert">Expert</span>
+                                    <p><strong>7+ Years Experience</strong> - Interactive data visualization and real-time charting.</p>
+                                    <ul>
+                                        <li>D3.js custom visualizations</li>
+                                        <li>Financial charting libraries (TradingView)</li>
+                                        <li>Real-time data streaming charts</li>
+                                        <li>Interactive dashboard development</li>
+                                    </ul>
+                                    <div class="project-links">
+                                        <a href="#" class="project-link">Financial Analytics Dashboard →</a>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="language-item" onclick="toggleSkillInfo('graphics')">
+                                <div class="language-header">
+                                    <span class="language-name">3D Modeling & Graphics</span>
+                                    <span class="dropdown-indicator">▶</span>
+                                </div>
+                                <div class="skill-info" id="graphics-info">
+                                    <span class="skill-level-dropdown advanced">Advanced</span>
+                                    <p><strong>6+ Years Experience</strong> - 3D graphics, WebGL, and immersive web experiences.</p>
+                                    <ul>
+                                        <li>Three.js 3D web applications</li>
+                                        <li>WebGL shader programming</li>
+                                        <li>Blender 3D modeling and animation</li>
+                                        <li>Virtual reality (WebXR) development</li>
+                                    </ul>
+                                    <div class="project-links">
+                                        <a href="#" class="project-link">3D NFT Viewer →</a>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="language-item" onclick="toggleSkillInfo('creative')">
+                                <div class="language-header">
+                                    <span class="language-name">Adobe Creative Suite</span>
+                                    <span class="dropdown-indicator">▶</span>
+                                </div>
+                                <div class="skill-info" id="creative-info">
+                                    <span class="skill-level-dropdown advanced">Advanced</span>
+                                    <p><strong>15+ Years Experience</strong> - Professional design and multimedia content creation.</p>
+                                    <ul>
+                                        <li>Photoshop for UI/UX design</li>
+                                        <li>Illustrator for vector graphics</li>
+                                        <li>After Effects for motion graphics</li>
+                                        <li>XD/Figma for prototyping</li>
+                                    </ul>
+                                    <div class="project-links">
+                                        <a href="#" class="project-link">Brand Design Portfolio →</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="ascii-border">│ ═══════════════════════════════</div>
+                    
+                    <div class="contact-info">
+                        <div class="terminal-prompt">$ cat /proc/status</div>
+                        <div class="file-tree">
+                        <span class="tree-line">├─</span> <span class="highlight">Status:</span> <span class="string">Available</span><br>
+                        <span class="tree-line">├─</span> <span class="highlight">Focus:</span> <span class="string">Enterprise Solutions</span><br>
+                        <span class="tree-line">├─</span> <span class="highlight">Location:</span> <span class="string">Remote/Global</span><br>
+                        <span class="tree-line">└─</span> <span class="highlight">Consulting:</span> <span class="string">Strategic & Technical</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </aside>
+        
+        <main class="main-content">
+            <div class="section">
+                <div class="section-header">// PROFESSIONAL_SUMMARY</div>
+                <div class="section-content">
+                    <p>Visionary technology leader with <span class="number">8+</span> years of entrepreneurial excellence in software engineering, blockchain development, and artificial intelligence. Distinguished track record of architecting and deploying enterprise-grade financial technology solutions, having facilitated over <span class="highlight">$50M</span> in startup capital raises and processed <span class="highlight">$10M+</span> through custom smart contracts with <span class="keyword">zero security breaches</span>. Proven expertise in leading cross-functional teams to deliver transformative solutions for Fortune 500 companies, celebrity brands, and global institutions including <span class="string">Nike</span>, <span class="string">The Vatican</span>, and prominent entertainment figures.</p>
+                    <br>
+                    <p><span class="keyword">Core Value Proposition:</span> Exceptional technical acumen combined with strategic business insight, consistently delivering scalable solutions that drive measurable growth and innovation in <span class="string">fintech</span>, <span class="string">DeFi</span>, and <span class="string">AI</span> domains.</p>
+                </div>
+            </div>
+
+            <div class="section">
+                <div class="section-header">// CORE_COMPETENCIES</div>
+                <div class="section-content">
+                    <div class="tech-grid">
+                        <div class="tech-category">
+                            <h5>Enterprise Software Engineering</h5>
+                            <ul class="tech-list">
+                                <li>Full-Stack Architecture & Development</li>
+                                <li>System Design & Scalability Engineering</li>
+                                <li>API Integration & Microservices Architecture</li>
+                                <li>Database Engineering & Optimization</li>
+                                <li>Server Deployment & Infrastructure Management</li>
+                            </ul>
+                        </div>
+                        <div class="tech-category">
+                            <h5>Blockchain & DeFi Innovation</h5>
+                            <ul class="tech-list">
+                                <li>Smart Contract Engineering & Auditing</li>
+                                <li>Decentralized Finance Protocol Development</li>
+                                <li>Tokenization Strategy & Implementation</li>
+                                <li>Real-World Asset (RWA) Infrastructure</li>
+                                <li>NFT Marketplace Development & Launch</li>
+                            </ul>
+                        </div>
+                        <div class="tech-category">
+                            <h5>Artificial Intelligence & ML</h5>
+                            <ul class="tech-list">
+                                <li>Custom AI Model Development & Training</li>
+                                <li>AI Strategy Development & Implementation</li>
+                                <li>Prompt Engineering & Optimization</li>
+                                <li>Deep Learning Architecture Design</li>
+                                <li>AI Automation & Workflow Integration</li>
+                            </ul>
+                        </div>
+                        <div class="tech-category">
+                            <h5>Financial Technology Leadership</h5>
+                            <ul class="tech-list">
+                                <li>Payment Infrastructure Development</li>
+                                <li>Banking & Exchange Platform Engineering</li>
+                                <li>Algorithmic Trading Systems</li>
+                                <li>Financial Analytics & Data Visualization</li>
+                                <li>Tokenomics Consulting & Design</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="section">
+                <div class="section-header">// PROFESSIONAL_EXPERIENCE</div>
+                <div class="section-content">
+                    <div class="experience-item">
+                        <div class="experience-title">Founder & Chief Technology Officer</div>
+                        <div class="experience-company">Freelance Software Development Firm</div>
+                        <div class="experience-date">2017 - Present</div>
+                        <div class="experience-description">
+                            <div class="subsection">
+                                <div class="subsection-title">Enterprise Blockchain Solutions</div>
+                                <ul>
+                                    <li>Architected and deployed production-grade blockchain infrastructure for enterprise clients, processing over <span class="number">$10M</span> in smart contract transactions with <span class="highlight">100% security record</span></li>
+                                    <li>Collaborated directly with <span class="keyword">Ethereum founding team members</span> on blockchain development, smart contract optimization, and compilation infrastructure improvements</li>
+                                    <li>Pioneered decentralized banking solutions and tokenized commodity platforms, revolutionizing traditional financial workflows</li>
+                                </ul>
+                            </div>
+                            
+                            <div class="subsection">
+                                <div class="subsection-title">High-Profile Client Partnerships</div>
+                                <ul>
+                                    <li>Launched NFT platform for global music icon <span class="string">AKON</span>, delivering seamless user experience and robust marketplace functionality</li>
+                                    <li>Developed blockchain solutions for <span class="string">Nike</span>, <span class="string">The Vatican</span> (Scholas Occurrentes charity for Pope Francis), and entertainment figures including <span class="string">MF DOOM</span> and <span class="string">Terry Crews</span></li>
+                                    <li>Generated over <span class="highlight">tens of millions</span> in NFT sales, custom smart contracts and marketplace development for celebrity and corporate clients</li>
+                                </ul>
+                            </div>
+                            
+                            <div class="subsection">
+                                <div class="subsection-title">Strategic Leadership & Team Management</div>
+                                <ul>
+                                    <li>Led diverse development teams across startup to mid-size company environments, consistently delivering projects on time and within budget</li>
+                                    <li>Managed full product lifecycle from conception to market launch, achieving <span class="highlight">100% client success rate</span> across all engagements</li>
+                                    <li>Drove multiple startups to successful exits and facilitated over <span class="number">$50M</span> in total capital raises through strategic technology leadership</li>
+                                </ul>
+                            </div>
+
+                            <div class="subsection">
+                                <div class="subsection-title">Innovation & Research Partnerships</div>
+                                <ul>
+                                    <li>Partnered with <span class="keyword">Mattereum</span> on groundbreaking Real-World Asset (RWA) creation and tokenization initiatives</li>
+                                    <li>Developed custom DeFi applications including sophisticated swap protocols and multi-chain NFT marketplaces</li>
+                                    <li>Advanced agricultural and commodity tokenization platforms, creating new paradigms for asset digitization</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="section">
+                <div class="section-header">// NOTABLE_ACHIEVEMENTS</div>
+                <div class="section-content">
+                    <div class="achievement">
+                        <span class="achievement-icon">🏆</span><span class="keyword">Perfect Success Record:</span> <span class="number">100%</span> project completion rate across all client engagements with zero security breaches
+                    </div>
+                    <div class="achievement">
+                        <span class="achievement-icon">💰</span><span class="keyword">Revenue Generation:</span> Facilitated over <span class="highlight">$50M</span> in startup capital raises through strategic technology leadership
+                    </div>
+                    <div class="achievement">
+                        <span class="achievement-icon">🔒</span><span class="keyword">Security Excellence:</span> Deployed smart contracts processing <span class="highlight">$10M+</span> in transactions with impeccable security record
+                    </div>
+                    <div class="achievement">
+                        <span class="achievement-icon">🌟</span><span class="keyword">Celebrity & Enterprise Partnerships:</span> Successfully launched platforms for global brands and entertainment icons
+                    </div>
+                    <div class="achievement">
+                        <span class="achievement-icon">🚀</span><span class="keyword">Innovation Leadership:</span> Pioneered multiple DeFi protocols and NFT marketplace implementations
+                    </div>
+                    <div class="achievement">
+                        <span class="achievement-icon">📈</span><span class="keyword">Scalability Expertise:</span> Consistently delivered enterprise-grade solutions capable of handling millions of users
+                    </div>
+                </div>
+            </div>
+            
+            <div class="section">
+                <div class="section-header">// ACADEMIC_CONTRIBUTIONS</div>
+                <div class="section-content">
+                    <div class="experience-item">
+                        <div class="experience-title">Guest Lecturer</div>
+                        <div class="experience-company">Parsons School of Design | New York, NY</div>
+                        <div class="experience-description">
+                            <p><span class="keyword">Course:</span> <span class="string">Advanced Cryptography and Blockchain Applications</span></p>
+                            <ul>
+                                <li>Developed and delivered comprehensive curriculum on cryptographic principles and practical cryptographic building blocks, and their implementation in complex systems</li>
+                                <li>Mentored students in understanding complex mathematical foundations of modern cryptographic systems</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="section">
+                <div class="section-header">// INNOVATION_FOCUS</div>
+                <div class="section-content">
+                    <div class="subsection">
+                        <div class="subsection-title">Professional Interests & Research Areas</div>
+                        <div class="skill-item"><span class="keyword">Financial Technology Evolution:</span> Exploring next-generation payment systems and decentralized banking infrastructure</div>
+                        <div class="skill-item"><span class="keyword">Tokenization of Everything:</span> Advancing the frontier of asset digitization across industries</div>
+                        <div class="skill-item"><span class="keyword">AI-Powered Trading:</span> Developing sophisticated algorithmic trading systems and predictive analytics</div>
+                        <div class="skill-item"><span class="keyword">Decentralized Autonomous Organizations (DAOs):</span> Contributing to governance and organizational innovation</div>
+                        <div class="skill-item"><span class="keyword">Deep Learning Applications:</span> Researching practical applications of AI in financial and blockchain domains</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="section">
+                <div class="section-header">// PROFESSIONAL_PHILOSOPHY</div>
+                <div class="section-content">
+                    <div class="quote">
+                        "Technology should serve humanity by creating more efficient, transparent, and equitable systems. Through careful engineering and strategic innovation, we can build solutions that not only solve today's challenges but anticipate tomorrow's opportunities."
+                    </div>
+                    <br>
+                    <p style="text-align: center; color: var(--accent-green); font-weight: 600;">
+                        Available for Strategic Consulting, Technical Leadership, and Full-Stack Development Projects
+                    </p>
+                    <p style="text-align: center; color: var(--text-secondary); font-style: italic; margin-top: 10px;">
+                        References and Portfolio Available Upon Request
+                    </p>
+                </div>
+            </div>
+            
+            <div style="height: 50px;"></div>
+        </main>
+    </div>
+    
+    <div class="status-bar">
+        <span>sabin_hertz_resume.html</span>
+        <span style="margin-left: auto;">Available for Strategic Consulting, Technical Leadership, and Full-Stack Development Projects</span>
+    </div>
+
+    <script>
+        // Initialize all dropdowns as expanded by default
+        document.addEventListener('DOMContentLoaded', function() {
+            // Initialize category dropdowns (all expanded by default)
+            const categoryHeaders = document.querySelectorAll('.category-header');
+            categoryHeaders.forEach(header => {
+                const arrow = header.querySelector('.dropdown-arrow');
+                if (arrow) {
+                    arrow.classList.remove('rotated');
+                }
+            });
+
+            // Initialize all skill info dropdowns as collapsed
+            const skillInfos = document.querySelectorAll('.skill-info');
+            skillInfos.forEach(info => {
+                info.classList.remove('expanded');
+            });
+
+            const dropdownIndicators = document.querySelectorAll('.dropdown-indicator');
+            dropdownIndicators.forEach(indicator => {
+                indicator.classList.remove('expanded');
+            });
+        });
+
+        // Toggle category sections (Programming Languages, Blockchain, etc.)
+        function toggleCategory(categoryId) {
+            const content = document.getElementById(categoryId + '-content');
+            const arrow = document.getElementById(categoryId + '-arrow');
+            
+            if (content.classList.contains('collapsed')) {
+                content.classList.remove('collapsed');
+                arrow.classList.remove('rotated');
+            } else {
+                content.classList.add('collapsed');
+                arrow.classList.add('rotated');
+            }
+        }
+
+        // Toggle individual skill information
+        function toggleSkillInfo(skillId) {
+            const info = document.getElementById(skillId + '-info');
+            const indicator = info.parentElement.querySelector('.dropdown-indicator');
+            
+            if (info.classList.contains('expanded')) {
+                info.classList.remove('expanded');
+                indicator.classList.remove('expanded');
+            } else {
+                // Close all other skill infos first
+                document.querySelectorAll('.skill-info.expanded').forEach(expandedInfo => {
+                    expandedInfo.classList.remove('expanded');
+                    const expandedIndicator = expandedInfo.parentElement.querySelector('.dropdown-indicator');
+                    if (expandedIndicator) {
+                        expandedIndicator.classList.remove('expanded');
+                    }
+                });
+                
+                // Open the selected one
+                info.classList.add('expanded');
+                indicator.classList.add('expanded');
+            }
+        }
+
+        // Add smooth scrolling for better UX
+        document.querySelectorAll('.language-item').forEach(item => {
+            item.addEventListener('click', function() {
+                // Small delay to allow animation to start
+                setTimeout(() => {
+                    const expandedInfo = this.querySelector('.skill-info.expanded');
+                    if (expandedInfo) {
+                        expandedInfo.scrollIntoView({
+                            behavior: 'smooth',
+                            block: 'nearest'
+                        });
+                    }
+                }, 100);
+            });
+        });
+
+        // Add keyboard navigation
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                // Close all expanded skill infos
+                document.querySelectorAll('.skill-info.expanded').forEach(info => {
+                    info.classList.remove('expanded');
+                    const indicator = info.parentElement.querySelector('.dropdown-indicator');
+                    if (indicator) {
+                        indicator.classList.remove('expanded');
+                    }
+                });
+            }
+        });
+
+        // Add click-outside-to-close functionality
+        document.addEventListener('click', function(e) {
+            if (!e.target.closest('.language-item') && !e.target.closest('.category-header')) {
+                // Only close if clicking outside all interactive elements
+                const clickedOnSidebar = e.target.closest('.sidebar');
+                if (!clickedOnSidebar) {
+                    document.querySelectorAll('.skill-info.expanded').forEach(info => {
+                        info.classList.remove('expanded');
+                        const indicator = info.parentElement.querySelector('.dropdown-indicator');
+                        if (indicator) {
+                            indicator.classList.remove('expanded');
+                        }
+                    });
+                }
+            }
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,24 @@
+Particle Ink - Immersive AR/Blockchain Platform
+Website: particleink.com
+Role: Smart Contract Developer, Full-Stack Developer, Project Manager
+Industry: AR/VR Gaming, Blockchain, NFT Platform
+
+OVERVIEW: Multi-platform experience merging physical/digital worlds through AR, AI, and blockchain. Creates "2.5th Dimension" ecosystem spanning gaming, live entertainment, digital collectibles, and phygital activations.
+
+TECHNICAL CONTRIBUTIONS:
+- Complete smart contract architecture (LIGHTLING token, NFT collections, staking platform)
+- AR gaming integration with blockchain functionality
+- Full-stack web application with real-time data sync
+- Cloud infrastructure deployment and management
+- Security audits: CertiK, Code4rena, Trustblock (all passed)
+
+MAJOR ACHIEVEMENTS:
+- International Thea Award Winner (Live Immersive Experience)
+- TED 2022 Featured Experience
+- Las Vegas Strip success (Luxor Las Vegas)
+- Zero security breaches post-audit
+- 99.9%+ platform uptime
+
+TECH STACK: Solidity, Ethereum, Node.js, React, Three.js, AWS, Docker, Kubernetes
+
+CONTRACTS: LIGHTLING Token (0xc20e204606557cb98b305be605f924d8565fb700)

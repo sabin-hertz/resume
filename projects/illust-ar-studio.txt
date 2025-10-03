@@ -1,0 +1,31 @@
+Illust AR Studio - Open AR Platform
+Website: illust.space
+Role: Chief Technology Officer (CTO)
+Duration: Startup to Seed Round
+Industry: AR, Blockchain, NFT Platform
+
+OVERVIEW: Open AR platform empowering digital creators to publish/share art globally. Combines AR technology with blockchain for immersive experiences discoverable anywhere via mobile browsers.
+
+TECHNICAL LEADERSHIP:
+- CTO from startup through successful seed funding round
+- Architected entire technology stack from ground up
+- Built technical team and led rapid growth phase
+- Pioneered AR NFT platform before NFT boom
+
+KEY DEVELOPMENTS:
+- Full-stack React/Node.js application with WebAR integration
+- Polygon blockchain integration with custom smart contracts
+- NFT marketplace with AR functionality (app.illust.space)
+- Geospatial AR with GPS-based content delivery
+- Microservices architecture on AWS with Kubernetes
+
+MAJOR ACHIEVEMENTS:
+- MF DOOM AR NFT auction: 30K+ visitors, 4M+ AR views, 18+ ETH sales
+- Featured in Decrypt Magazine with direct quote from Sabin
+- Successful seed funding round
+- 0 to 30K+ active users growth
+- Pre-NFT boom technology pioneer
+
+TECH STACK: React, Node.js, Three.js, Solidity, Polygon, PostgreSQL, AWS, Docker, Kubernetes
+
+PRESS: Decrypt Magazine - "MF DOOM: Enigmatic Rapper Leaves Behind Crypto Art Legacy"
